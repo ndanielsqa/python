@@ -1,0 +1,45 @@
+import codecademylib
+import pandas as pd
+
+visits = pd.read_csv('visits.csv',
+                     parse_dates=[1])
+cart = pd.read_csv('cart.csv',
+                   parse_dates=[1])
+checkout = pd.read_csv('checkout.csv',
+                       parse_dates=[1])
+purchase = pd.read_csv('purchase.csv',
+                       parse_dates=[1])
+print(visits.head())
+print(cart.head())
+print(checkout.head())
+print(purchase.head())
+visits_cart =pd.merge(visits,cart, how='left')
+print(visits_cart)
+#2052 rows x 3 columns
+null_rows=visits_cart[visits_cart.cart_time.isnull()].user_id.count()
+# cart time null-users visited, but didn't put item into cart
+print(null_rows)
+percent= float(1652)/2052*100
+print(percent)
+#81% didn't place t-shirt in cart
+cart_checkout=pd.merge(cart, checkout, how = 'left')
+null_rows2=cart_checkout[cart_checkout.checkout_time.isnull()].user_id.count()
+print(null_rows2)
+percent2= float(126)/2052*100
+print(percent2)
+#6% didn't proceed to checkout
+all_data =visits.merge(cart, how = 'left')\
+.merge(checkout, how='left')\
+.merge(purchase, how='left')
+print(all_data.head())
+nopurchase=all_data[all_data.purchase_time.isnull()].user_id.count()
+print(nopurchase)
+percent3= float(1898)/2052*100
+print(percent3)
+#8 92%
+#9 purchase
+all_data['time_to_purchase'] = \
+    all_data.purchase_time - \
+    all_data.visit_time
+print all_data.time_to_purchase
+print all_data.time_to_purchase.mean()
