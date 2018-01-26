@@ -1,0 +1,24 @@
+import pandas as pd
+table = pd.read_csv('Android vs Chrome.csv')
+table.sort_index()
+tablechrome=table[table.browser=='Chrome']
+allchrome=tablechrome['alldevices']
+print(tablechrome)
+month_names=["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+import numpy as np
+totalchrome=np.array(allchrome)
+
+print(totalchrome)
+
+from matplotlib import pyplot as plt
+ml=range(12)
+ax = plt.subplot()
+plt.plot (ml,totalchrome,color='green',marker='s')
+plt.title('Chrome vs Android mobile devices')
+ax.set_xlabel('Months of the year')
+ax.set_ylabel('Number of session')
+ax.set_xticks(month_names)
+#legend_labels = ["Chrome", "Android"]
+#plt.legend(legend_labels, loc=1)
+plt.show()
+#plt.savefig('Chrome vs Android all.png')
